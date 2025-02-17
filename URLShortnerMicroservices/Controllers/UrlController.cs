@@ -1,0 +1,59 @@
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using URLShortnerMicroservices.Model;
+using URLShortnerMicroservices.Services;
+
+namespace URLShortnerMicroservices.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UrlController : ControllerBase
+    {
+        /// <summary>
+        /// Instance of IUrlShortenerService.
+        /// </summary>
+        private IUrlShortenerService _urlShortnereService;
+        public UrlController(IUrlShortenerService urlShortenerService)
+        {
+            _urlShortnereService = urlShortenerService;
+        }
+        /// <summary>
+        /// This will provide a short url for given long url
+        /// </summary>
+        /// <param name="request"> Instance of GenerateShortUrlRequest</param>
+        /// <returns>On Completion  will return the Long url with valid statuscode</returns>
+        [HttpPost("generateShortUrl")]
+
+        public async Task<IActionResult> generateShortUrl([FromBody] GenerateShortUrlRequest request)
+        {
+            var shortUrl = await _urlShortnereService.ShortenUrlAsync(request.longUrl);
+            GenerateShortUrlResponse generateShortUrlReponse = new GenerateShortUrlResponse();
+            generateShortUrlReponse.longUrl = request.longUrl;
+            generateShortUrlReponse.shortUrl = shortUrl;
+
+
+
+
+
+            return Created(new Uri(""),generateShortUrlReponse);
+        }
+
+
+        [HttpPost("getOriginalUrl")]
+        public async Task<IActionResult> getOriginalUrl([FromBody] GetOriginalUrlRequest request)
+        {
+            var longUrlResponse = await _urlShortnereService.GetOriginalUrlAsync(request.shortUrl);
+            GetOriginalUrlResponse getOrignalUrlResponse = new GetOriginalUrlResponse();
+            getOrignalUrlResponse.shortUrl = request.shortUrl;
+            getOrignalUrlResponse.longUrl = longUrlResponse;
+
+            if (longUrlResponse == null)
+            {
+                getOrignalUrlResponse.message = "URL not present into the Database.";
+            }
+            return Ok(getOrignalUrlResponse);
+        }
+    }
+}
+

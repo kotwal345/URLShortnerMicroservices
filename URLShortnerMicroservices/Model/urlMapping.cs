@@ -2,7 +2,7 @@
 
 namespace URLShortnerMicroservices.Model
 {
-    public class urlMapping
+    public class UrlMapping
     {
         [Key]
         public int id { get; set; }
