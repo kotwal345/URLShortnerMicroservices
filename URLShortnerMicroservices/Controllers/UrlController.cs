@@ -27,16 +27,23 @@ namespace URLShortnerMicroservices.Controllers
 
         public async Task<IActionResult> generateShortUrl([FromBody] GenerateShortUrlRequest request)
         {
-            var shortUrl = await _urlShortnereService.ShortenUrlAsync(request.longUrl);
-            GenerateShortUrlResponse generateShortUrlReponse = new GenerateShortUrlResponse();
-            generateShortUrlReponse.longUrl = request.longUrl;
-            generateShortUrlReponse.shortUrl = shortUrl;
+            if (string.IsNullOrEmpty(request.longUrl))
+            {
+                return BadRequest("The Longest needs to be specified ");
+            }
+            try
+            {
+                var shortUrl = await _urlShortnereService.ShortenUrlAsync(request.longUrl);
+                GenerateShortUrlResponse generateShortUrlReponse = new GenerateShortUrlResponse();
+                generateShortUrlReponse.longUrl = request.longUrl;
+                generateShortUrlReponse.shortUrl = shortUrl;
 
-
-
-
-
-            return CreatedAtAction(nameof(generateShortUrl),generateShortUrlReponse);
+                return CreatedAtAction(nameof(generateShortUrl),generateShortUrlReponse);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error, Unable to process request ");
+            }
         }
 
         /// <summary>
@@ -47,16 +54,28 @@ namespace URLShortnerMicroservices.Controllers
         [HttpPost("getOriginalUrl")]
         public async Task<IActionResult> getOriginalUrl([FromBody] GetOriginalUrlRequest request)
         {
-            var longUrlResponse = await _urlShortnereService.GetOriginalUrlAsync(request.shortUrl);
-            GetOriginalUrlResponse getOrignalUrlResponse = new GetOriginalUrlResponse();
-            getOrignalUrlResponse.shortUrl = request.shortUrl;
-            getOrignalUrlResponse.longUrl = longUrlResponse;
-
-            if (longUrlResponse == null)
+            if (string.IsNullOrEmpty(request.shortUrl))
             {
-                getOrignalUrlResponse.message = "URL not present into the Database.";
+                return BadRequest("Short URL property needs to be specified ");
             }
-            return Ok(getOrignalUrlResponse);
+            try
+            {
+                var longUrlResponse = await _urlShortnereService.GetOriginalUrlAsync(request.shortUrl);
+                GetOriginalUrlResponse getOrignalUrlResponse = new GetOriginalUrlResponse();
+                getOrignalUrlResponse.shortUrl = request.shortUrl;
+                getOrignalUrlResponse.longUrl = longUrlResponse;
+
+                if (longUrlResponse == null)
+                {
+                    getOrignalUrlResponse.message = "URL not present into the Database.";
+                }
+                return Ok(getOrignalUrlResponse);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error occured while processing request ." + ex.Message);
+            }
+            
         }
     }
 }
