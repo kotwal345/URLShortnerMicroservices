@@ -36,10 +36,14 @@ namespace URLShortnerMicroservices.Controllers
 
 
 
-            return Created(new Uri(""),generateShortUrlReponse);
+            return CreatedAtAction(nameof(generateShortUrl),generateShortUrlReponse);
         }
 
-
+        /// <summary>
+        /// retrive the original URL associated with the short URL.
+        /// </summary>
+        /// <param name="request">Instance of GetOriginalUrlRequest containing the short URL to ehich find the original URL</param>
+        /// <returns>Response with short URL and Long URL along with message if not found it will be error message.</returns>
         [HttpPost("getOriginalUrl")]
         public async Task<IActionResult> getOriginalUrl([FromBody] GetOriginalUrlRequest request)
         {

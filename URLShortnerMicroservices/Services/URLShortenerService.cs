@@ -12,6 +12,12 @@ namespace URLShortnerMicroservices.Services
         private const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         private Random _random = new Random();
+
+        /// <summary>
+        /// Retrives the original URL associated with the given short URL.
+        /// </summary>
+        /// <param name="shortUrl">Instance of string indicating the short URL</param>
+        /// <returns>The Original URL if found; Otherwise NULL.</returns>
         public async Task<string?> GetOriginalUrlAsync(string shortUrl)
         {
 
@@ -23,6 +29,11 @@ namespace URLShortnerMicroservices.Services
             return null;
         }
 
+        /// <summary>
+        /// Shortner an original URL by generating a unique code storing into database.
+        /// </summary>
+        /// <param name="originalUrl">Instance of string indicating the original URL.</param>
+        /// <returns>The newly generated short URL. </returns>
         public async Task<string> ShortenUrlAsync(string originalUrl)
         {
 
