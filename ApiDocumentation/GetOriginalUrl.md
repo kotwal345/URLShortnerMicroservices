@@ -14,7 +14,7 @@ This request will be sent for shortURL present into Database, user will receive 
 
 ```json
 {
-  "shortUrl": "project.lyxOWXda"
+  "shortUrl": "project.lyPQdnQs"
 }
 ```
 
@@ -23,8 +23,8 @@ This request will be sent for shortURL present into Database, user will receive 
 #### ** Success**
 ```json
 {
-    "message": null,
-    "longUrl": "https://www.msn.com/en-in/news/india/trump-vance-clash-with-zelenskyy-in-heated-oval-office-exchange-over-russia-ukraine-war-read-transcript-here/ar-AA1A1NF4?ocid=msedgntp&pc=HCTS&cvid=66a926b02c2e43c9a5432c9e659ab454&ei=8",
-    "shortUrl": "project.lyxOWXda"
+  "message": null,
+  "longUrl": "https://chatgpt.com/c/67c2acbf-f0a4-8002-b136-e5399e47a01b",
+  "shortUrl": "project.lyPQdnQs"
 }
 ```
