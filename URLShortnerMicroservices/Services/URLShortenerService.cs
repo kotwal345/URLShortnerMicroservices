@@ -41,7 +41,7 @@ namespace URLShortnerMicroservices.Services
 
             var shortcode = GenerateShortCode();
             //Add prefix if nedded
-            var shortUrl = "newgen.ly" + shortcode;
+            var shortUrl = "project.ly" + shortcode;
             //add into database
             var mapping = new UrlMapping();
             mapping.shortUrl = shortUrl;
