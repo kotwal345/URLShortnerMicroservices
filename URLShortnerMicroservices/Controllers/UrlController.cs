@@ -56,7 +56,7 @@ namespace URLShortnerMicroservices.Controllers
         {
             if (string.IsNullOrEmpty(request.shortUrl))
             {
-                return BadRequest("Short URL property needs to be specified ");
+                return BadRequest("Short URL property can't be empty or NULL. ");
             }
             try
             {
@@ -67,9 +67,15 @@ namespace URLShortnerMicroservices.Controllers
 
                 if (longUrlResponse == null)
                 {
-                    getOrignalUrlResponse.message = "URL not present into the Database.";
+                    getOrignalUrlResponse.message = request.shortUrl + " is not present into the Database.";
+                    return NotFound(getOrignalUrlResponse);
                 }
-                return Ok(getOrignalUrlResponse);
+                else
+                {
+                    return Ok(getOrignalUrlResponse);
+                }
+
+
             }
             catch (Exception ex)
             {
